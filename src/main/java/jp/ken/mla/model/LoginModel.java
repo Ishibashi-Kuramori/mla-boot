@@ -4,20 +4,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 
-//import jp.ken.mla.entity.Plan;
-
-
 public class LoginModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int member_id = 0;
-
 	private String member_name = "Guest User";
-
 	private String email;
-
 	private String password;
-
 	private int admin = 0;
 	private int plan_id = 0;
 	private int pay_id = 0;
@@ -26,16 +19,16 @@ public class LoginModel implements Serializable {
 	private Date join_date;
 	private Date make_date;
 	private Date update_date;
-/*
-	private Plan plan;
 
-	public Plan getPlan() {
+	private PlanModel plan;
+
+	public PlanModel getPlan() {
 		return plan;
 	}
-	public void setPlan(Plan plan) {
+	public void setPlan(PlanModel plan) {
 		this.plan = plan;
 	}
-*/
+
 	public int getMember_id() {
 		return member_id;
 	}

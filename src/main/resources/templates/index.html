@@ -13,7 +13,7 @@
     </ul>
 
     <!-- SEARCH FORM -->
-    <form class="form-inline ml-3" action="/index" th:object="${searchModel}">
+    <form class="form-inline ml-3" th:action="@{/index}" method="post" th:object="${searchModel}">
       <div class="input-group input-group-sm">
         <input class="form-control form-control-navbar" name="word" placeholder="商品検索" aria-label="Search" />
         <div class="input-group-append">
@@ -39,15 +39,15 @@
     <!-- Right navbar links(ログイン時) -->
     <ul class="navbar-nav ml-auto d-flex align-items-center" th:if="${loginModel.member_id != 0}">
       <li class="nav-item pr-3">
-        <div class="border bg-${loginModel.plan.plan_color} rounded" style="padding:3px 15px ;">${loginModel.plan.plan_name}</div>
+        <div th:class="'border bg-' + ${loginModel.plan.plan_color} + ' rounded'" style="padding:3px 15px ;">[[${loginModel.plan.plan_name}]]</div>
       </li>
       <li class="nav-item pr-3">
         <span class="text-dark">今月の貸出可能枚数: </span>
-        <span class="text-success" th:if="${loginModel.plan.limit_cnt <= 1000}">${loginModel.plan.limit_cnt}枚</span>
+        <span class="text-success" th:if="${loginModel.plan.limit_cnt <= 1000}">[[${loginModel.plan.limit_cnt}]]枚</span>
         <span class="text-success" th:if="${loginModel.plan.limit_cnt > 1000}">無制限</span>
       </li>
       <li class="nav-item pr-3">
-        <span class="text-warning"><i class="fas fa-coins"></i> POINT: ${loginModel.total_point}</span>
+        <span class="text-warning"><i class="fas fa-coins"></i> POINT: [[${loginModel.total_point}]]</span>
       </li>
       <li class="nav-item">
         <a href="logout" class="btn btn-primary">ログアウト</a>
@@ -77,7 +77,7 @@
         </div>
         <div class="info">
           <a href="#" class="d-block" th:if="${loginModel.member_id != 0}">
-            ${loginModel.member_name}&nbsp;<i class="fas fa-user-cog" th:if="loginModel.admin == 1}"></i>
+            [[${loginModel.member_name}]]&nbsp;<i class="fas fa-user-cog" th:if="${loginModel.admin == 1}"></i>
           </a>
           <a href="#" class="d-block" th:if="${loginModel.member_id == 0}">
             Guest User
