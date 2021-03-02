@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import jp.ken.mla.model.LoginModel;
 
@@ -29,6 +30,14 @@ public class IndexController {
 		setActiveTab(model, "top");
 //		model.addAttribute("rentalIds", rentalDAO.getByRentalItemIds(member_id));
 		return "index";
+	}
+
+	// ログアウトボタン
+	@RequestMapping(value="/logout", method=RequestMethod.GET)
+	public String runLogout(SessionStatus status) {
+		status.setComplete();
+		setUpLoginModel();
+		return "redirect:/index";
 	}
 
 	public static void setActiveTab(Model model, String pName) {

@@ -62,6 +62,8 @@ public class Main {
 
   @RequestMapping("/db")
   String db(Map<String, Object> model) {
+	System.out.println("dbUrl:" + dbUrl);
+	System.out.println("★★★★★★★★★★★★dataSource:" + dataSource);
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
       stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
@@ -91,13 +93,17 @@ public class Main {
 
   @Bean
   public DataSource dataSource() throws SQLException {
-    if (dbUrl == null || dbUrl.isEmpty()) {
-      return new HikariDataSource();
-    } else {
-      HikariConfig config = new HikariConfig();
-      config.setJdbcUrl(dbUrl);
-      return new HikariDataSource(config);
-    }
+	HikariConfig config = new HikariConfig();
+	if (dbUrl == null || dbUrl.isEmpty()) {
+		// ローカル開発DB接続
+		config.setJdbcUrl("jdbc:postgresql://127.0.0.1:5432/spring_database");
+		config.setUsername("postgres");
+		config.setPassword("root");
+	} else {
+		// リモート本番DB接続
+		config.setJdbcUrl(dbUrl);
+	}
+	return new HikariDataSource(config);
   }
 
 }
