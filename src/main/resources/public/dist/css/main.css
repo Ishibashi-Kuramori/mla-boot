@@ -1,0 +1,11 @@
+.icon-select input[type="radio"] {
+  display: none;
+}
+.icon-select label img {
+  width: 100px;
+  margin: 3px;
+  padding: 3px;
+}
+.icon-select input[type="radio"]:checked + label img {
+  background: orange;
+}

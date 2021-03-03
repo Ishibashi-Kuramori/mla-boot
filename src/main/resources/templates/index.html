@@ -73,7 +73,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img th:src="@{dist/img/user{idx}.png(idx=${loginModel.icon_idx})}" class="img-circle elevation-2" alt="User Image" />
+          <img th:src="'dist/img/user' + ${loginModel.icon_idx} + '.png'" class="img-circle elevation-2" alt="User Image" />
         </div>
         <div class="info">
           <a href="#" class="d-block" th:if="${loginModel.member_id != 0}">

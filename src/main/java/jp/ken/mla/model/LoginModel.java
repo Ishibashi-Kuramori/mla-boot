@@ -8,7 +8,7 @@ public class LoginModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int member_id = 0;
-	private String member_name = "Guest User";
+	private String member_name = "";
 	private String email;
 	private String password;
 	private int admin = 0;

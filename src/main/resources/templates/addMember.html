@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'addMember')}">
+
+  <style type="text/css">
+
+  </style>
+
+<body style="background-color: #f4f6f9;">
+  <div class="wrapper" style="width: 600px;margin: 100px auto;">
+    <!-- Horizontal Form -->
+    <div class="card card-info">
+      <div class="card-header">
+        <h3 class="card-title">Rental Site 新規登録フォーム</h3>
+      </div> <!-- /.card-header -->
+      <!-- form start -->
+      <form class="form-horizontal" id="memberForm" th:action="@{/addMember}" method="post" th:object="${loginModel}">
+        <div class="card-body">
+          <div class="form-group row">
+            <label for="inputMemberName3" class="col-sm-2 col-form-label">お名前</label>
+            <div class="col-sm-10">
+              <input type="text" name="member_name" class="form-control" id="inputMemberName3" placeholder="お名前" />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+              <input type="email" name="email" class="form-control" id="inputEmail3" placeholder="Email" />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-10">
+              <input type="password" name="password" class="form-control" id="inputPassword3" placeholder="Password" />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword3" class="col-sm-2 col-form-label">お支払い</label>
+            <div class="col-sm-10">
+              <select name="pay_id" class="custom-select">
+                <option th:each="pay : ${payList}" th:value="${pay.pay_id}" th:text="${pay.pay_name}"></option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword3" class="col-sm-2 col-form-label">イメージ</label>
+            <div class="col-sm-10">
+              <div class="row">
+                <div class="col-sm-3 icon-select" th:each="icon, status : ${icons}">
+                  <input type="radio" name="icon_idx" th:value="${icon}" th:id="'icon' + ${icon}" th:if="${status.first}" checked="true" />
+                  <input type="radio" name="icon_idx" th:value="${icon}" th:id="'icon' + ${icon}" th:if="${!status.first}" />
+                  <label th:for="'icon' + ${icon}">
+                    <img th:src="'dist/img/user' + ${icon} + '.png'" class="img-circle elevation-2" alt="User Image" />
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> <!-- /.card-body -->
+        <span class="error invalid-feedback" style="display: inline;">[[${errorMessage}]]</span>
+        <div class="card-footer">
+          <button type="submit" class="btn btn-info">登録</button>
+          <button type="button" class="btn btn-default float-right" onclick="history.back()">キャンセル</button>
+        </div> <!-- /.card-footer -->
+      </form>
+    </div> <!-- /.card -->
+  </div> <!-- ./wrapper -->
+</body>
+</html>
