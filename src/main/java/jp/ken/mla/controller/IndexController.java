@@ -1,6 +1,5 @@
 package jp.ken.mla.controller;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.support.SessionStatus;
 import jp.ken.mla.model.LoginModel;
 
 @Controller
-@SpringBootApplication
 @SessionAttributes("loginModel")
 public class IndexController {
 
