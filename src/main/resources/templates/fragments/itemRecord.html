@@ -1,0 +1,15 @@
+<td class="align-middle" style="width: 80px">
+  <div class="border bg-danger rounded text-center small" th:if="${item.new_old == 0}">NEW</div>
+  <div th:class="'border bg-' + ${item.media.media_color} + ' rounded text-center small'">[[${item.media.media_name}]]</div>
+</td>
+<td class="align-middle">
+  [[${item.item_name}]]<br />
+  <span class="small">[[${item.media_id != 0 ? "監督" : "アーティスト"}]]：[[${item.author_name}]]</span>
+</td>
+<td class="align-middle">
+  <span class="text-warning"><i class="fas fa-coins"></i> [[${item.add_point}]]</span>
+</td>
+<td class="align-middle">
+  <button type="button" class="btn btn-outline-primary w-100 disabled" th:if="${loginModel.member_id == 0}">借りる</button>
+  <button type="button" class="btn btn-outline-primary w-100" th:if="${loginModel.member_id != 0}">借りる</button>
+</td>

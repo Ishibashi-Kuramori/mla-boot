@@ -16,7 +16,7 @@ import jp.ken.mla.model.LoginModel;
 @Controller
 @RequestMapping("addMember")
 @SessionAttributes("loginModel")
-public class addMember {
+public class AddMemberController {
 
 	@Autowired
 	private MemberDb memberDb;

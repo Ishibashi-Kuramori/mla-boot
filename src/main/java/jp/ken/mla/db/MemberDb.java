@@ -22,6 +22,20 @@ public class MemberDb {
 	@Autowired
 	private PlanDb planDb;
 
+	// ID から会員情報を1件取得
+	public LoginModel getById(int id) {
+		try (Connection connection = dataSource.getConnection()) {
+			String sql = "SELECT * FROM mla_member_tbl WHERE member_id = ?";
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			return getRecord(rs);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new LoginModel();
+		}
+	}
+
 	// Mail から会員情報を1件取得
 	public LoginModel getByMail(String email) {
 		try (Connection connection = dataSource.getConnection()) {
@@ -72,6 +86,68 @@ public class MemberDb {
 			ps.setInt(7, 0); // 追加時はポイント0
 			ps.setInt(8, lModel.getIcon_idx());
 
+			numRow = ps.executeUpdate();
+			if(numRow > 0) {
+				connection.commit();
+				ps.close();
+				return true;
+
+			} else {
+				connection.rollback();
+				ps.close();
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	// 会員情報を編集
+	public boolean updateMemberData(LoginModel lModel) {
+		int numRow =0;
+		try (Connection connection = dataSource.getConnection()) {
+			connection.setAutoCommit(false);
+			String sql = "UPDATE mla_member_tbl SET ";
+			sql        += "member_name = ?, email = ?, password = ?, admin = ?, plan_id = ?, ";
+			sql        += "pay_id = ?, total_point = ?, icon_idx = ?, update_date = NOW() ";
+			sql        += "WHERE member_id = ?";
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setString(1, lModel.getMember_name());
+			ps.setString(2, lModel.getEmail());
+			ps.setString(3, lModel.getPassword());
+			ps.setInt(4, lModel.getAdmin());
+			ps.setInt(5, lModel.getPlan_id());
+			ps.setInt(6, lModel.getPay_id());
+			ps.setInt(7, lModel.getTotal_point());
+			ps.setInt(8, lModel.getIcon_idx());
+			ps.setInt(9, lModel.getMember_id());
+
+			numRow = ps.executeUpdate();
+			if(numRow > 0) {
+				connection.commit();
+				ps.close();
+				return true;
+
+			} else {
+				connection.rollback();
+				ps.close();
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	// 会員情報を削除
+	public boolean deleteMemberData(int id) {
+		int numRow =0;
+		try (Connection connection = dataSource.getConnection()) {
+			connection.setAutoCommit(false);
+			String sql = "DELETE FROM mla_member_tbl WHERE member_id = ?";
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, id);
 			numRow = ps.executeUpdate();
 			if(numRow > 0) {
 				connection.commit();
