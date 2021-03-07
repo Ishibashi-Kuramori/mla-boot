@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import jp.ken.mla.db.ItemDb;
+import jp.ken.mla.db.RentalDb;
 import jp.ken.mla.model.LoginModel;
 import jp.ken.mla.model.SearchModel;
 
@@ -19,6 +20,9 @@ public class IndexController {
 
 	@Autowired
 	private ItemDb itemDb;
+
+	@Autowired
+	private RentalDb rentalDb;
 
 	private int member_id = 0;
 
@@ -35,7 +39,7 @@ public class IndexController {
 		model.addAttribute("newList", itemDb.top5List(0));
 		model.addAttribute("oldList", itemDb.top5List(1));
 		model.addAttribute("allList", itemDb.allList());
-//		model.addAttribute("rentalIds", rentalDAO.getByRentalItemIds(member_id));
+		model.addAttribute("rentalIds", rentalDb.getByRentalItemIds(member_id));
 		return "index";
 	}
 
@@ -51,7 +55,7 @@ public class IndexController {
 		model.addAttribute("newList", itemDb.top5List(0));
 		model.addAttribute("oldList", itemDb.top5List(1));
 		model.addAttribute("allList", itemDb.allList());
-//		model.addAttribute("rentalIds", rentalDAO.getByRentalItemIds(member_id));
+		model.addAttribute("rentalIds", rentalDb.getByRentalItemIds(member_id));
 		return "index";
 	}
 

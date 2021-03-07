@@ -84,7 +84,7 @@ public class ItemDb {
 	// 内部処理メソッド
 	// -----------------------------
 
-	// 会員情報レコード取得
+	// 商品情報レコード取得
 	private List<ItemModel> getRecord(ResultSet rs) throws SQLException {
 		List<ItemModel> iList = new ArrayList<>();
 		while (rs.next()) {
