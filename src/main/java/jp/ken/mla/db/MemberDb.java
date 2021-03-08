@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -22,6 +24,18 @@ public class MemberDb {
 	@Autowired
 	private PlanDb planDb;
 
+	public List<LoginModel> allList() {
+		try (Connection connection = dataSource.getConnection()) {
+			String sql = "SELECT * FROM mla_member_tbl";
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			return getRecord(rs);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<LoginModel>();
+		}
+	}
+
 	// ID から会員情報を1件取得
 	public LoginModel getById(int id) {
 		try (Connection connection = dataSource.getConnection()) {
@@ -29,7 +43,8 @@ public class MemberDb {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
-			return getRecord(rs);
+			List<LoginModel> memberList = getRecord(rs);
+			return memberList.get(0);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new LoginModel();
@@ -43,7 +58,8 @@ public class MemberDb {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setString(1, email);
 			ResultSet rs = ps.executeQuery();
-			return getRecord(rs);
+			List<LoginModel> memberList = getRecord(rs);
+			return memberList.get(0);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new LoginModel();
@@ -59,7 +75,8 @@ public class MemberDb {
 			ps.setString(2, lModel.getPassword());
 
 			ResultSet rs = ps.executeQuery();
-			BeanUtils.copyProperties(getRecord(rs), lModel);
+			List<LoginModel> memberList = getRecord(rs);
+			BeanUtils.copyProperties(memberList.get(0), lModel);
 			return lModel;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -170,9 +187,10 @@ public class MemberDb {
 	// -----------------------------
 
 	// 会員情報レコード取得
-	private LoginModel getRecord(ResultSet rs) throws SQLException {
-		LoginModel lModel = new LoginModel();
+	private List<LoginModel> getRecord(ResultSet rs) throws SQLException {
+		List<LoginModel> memberList = new ArrayList<LoginModel>();
 		while (rs.next()) {
+			LoginModel lModel = new LoginModel();
 			lModel.setMember_id(rs.getInt("member_id"));
 			lModel.setMember_name(rs.getString("member_name"));
 			lModel.setEmail(rs.getString("email"));
@@ -186,8 +204,9 @@ public class MemberDb {
 			lModel.setMake_date(rs.getDate("make_date"));
 			lModel.setUpdate_date(rs.getDate("update_date"));
 			lModel.setPlan(planDb.getById(lModel.getPlan_id()));
+			memberList.add(lModel);
 		}
-		return lModel;
+		return memberList;
 	}
 
 }

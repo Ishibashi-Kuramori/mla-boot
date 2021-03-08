@@ -79,7 +79,7 @@ public class IndexController {
 		}
 */
 		model.addAttribute("activeTop",       (pName.equals("top"))       ? "active" : "");
-		model.addAttribute("activeModMember", (pName.equals("modMember")) ? "active" : "");
+		model.addAttribute("activeModMember", (pName.equals("modMember") || pName.equals("listdMember")) ? "active" : "");
 		model.addAttribute("activeRental",    (pName.equals("rental"))    ? "active" : "");
 		model.addAttribute("activeHistory",   (pName.equals("history"))   ? "active" : "");
 		model.addAttribute("activeStock",     (pName.equals("stock"))     ? "active" : "");

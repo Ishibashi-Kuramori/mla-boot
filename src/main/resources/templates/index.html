@@ -98,7 +98,7 @@
                 </a>
               </li>
               <li class="nav-item" th:if="${loginModel.member_id != 0}">
-                <a href="modMember" th:class="'nav-link ' + ${activeModMember}">
+                <a th:href="${(loginModel.admin == 1) ? 'listMember' : 'modMember'}" th:class="'nav-link ' + ${activeModMember}">
                   <i class="fas fa-user nav-icon"></i>&nbsp;個人情報管理
                 </a>
               </li>
