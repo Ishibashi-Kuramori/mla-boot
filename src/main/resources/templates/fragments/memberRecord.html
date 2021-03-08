@@ -1,0 +1,27 @@
+<td class="align-middle">
+  <div class="user-panel pb-1 d-flex">
+    <div class="image">
+      <img th:src="'dist/img/user' + ${member.icon_idx} + '.png'" class="img-circle elevation-2" alt="User Image" />
+    </div>
+    <div class="info">
+      [[${member.member_name}]]&nbsp;<i class="fas fa-user-cog" th:if="${member.admin == 1}"></i>
+    </div>
+  </div>
+</td>
+<td class="align-middle">
+  <div th:class="'border bg-' + ${member.plan.plan_color} + ' rounded'" style="padding:3px 15px; width:80px;">[[${member.plan.plan_name}]]</div>
+</td>
+<td class="align-middle">
+  <span class="text-dark">今月の貸出可能枚数: </span>
+  <span class="text-success" th:if="${member.plan.limit_cnt <= 1000}">[[${member.plan.limit_cnt}]]枚</span>
+  <span class="text-success" th:if="${member.plan.limit_cnt > 1000}">無制限</span>
+</td>
+<td class="align-middle">
+  <span class="text-warning"><i class="fas fa-coins"></i> POINT: [[${member.total_point}]]</span>
+</td>
+<td class="align-middle">
+  <form th:action="@{/listMember}" method="post" th:object="${listMemberModel}">
+    <input type="hidden" name="mod_id" th:value="${member.member_id}" />
+    <button class="btn btn-outline-primary w-100" type="submit">編集</button>
+  </form>
+</td>
