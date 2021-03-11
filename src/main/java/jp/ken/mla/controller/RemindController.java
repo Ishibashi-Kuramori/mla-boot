@@ -20,9 +20,7 @@ public class RemindController {
 			return "redirect:/login";
 		}
 		if(lModel.getAdmin() != 1) { // 管理ユーザ以外からのアクセスはエラー
-			model.addAttribute("errorMessage", "管理者ユーザ以外はアクセス出来ません。");
-			IndexController.setActiveTab(model, "error");
-			return "index";
+			return IndexController.dispError(model, "管理者ユーザ以外はアクセス出来ません。");
 		}
 		IndexController.setActiveTab(model, "remind");
 		return "index";
