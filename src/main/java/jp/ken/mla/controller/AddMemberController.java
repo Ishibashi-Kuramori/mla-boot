@@ -49,10 +49,10 @@ public class AddMemberController {
 				BeanUtils.copyProperties(reGetRec, lModel);
 				return "redirect:/index";
 			} else {
-				return setDispAddMember(model, "レコード再取得に失敗しました。");
+				return IndexController.dispError(model, "レコード再取得に失敗しました。");
 			}
 		} else {
-			return setDispAddMember(model, "DB登録に失敗しました。");
+			return IndexController.dispError(model, "DB登録に失敗しました。");
 		}
 	}
 

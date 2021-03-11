@@ -26,7 +26,7 @@ public class RentalDb {
 	// 会員IDに紐付くレンタル情報を全件取得
 	public List<RentalModel> getByMemberId(int id) {
 		try (Connection connection = dataSource.getConnection()) {
-			String sql = "SELECT * FROM mla_rental_tbl WHERE member_id = ?";
+			String sql = "SELECT * FROM mla_rental_tbl WHERE member_id = ? ORDER BY hope_order";
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
@@ -48,6 +48,25 @@ public class RentalDb {
 		return retList;
 	}
 
+	// 希望順新規採番値を取得
+	public int getHopeOrder(int id) {
+		int ret = 0;
+		try (Connection connection = dataSource.getConnection()) {
+			String sql = "SELECT MAX(hope_order) FROM mla_rental_tbl WHERE member_id = ?";
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				ret = rs.getInt("max");
+			}
+			ret += 1;
+			return ret;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 1;
+		}
+	}
+
 	// レンタル情報を追加
 	public boolean insertRentalData(RentalModel rModel) {
 		int numRow =0;
@@ -56,10 +75,11 @@ public class RentalDb {
 			String sql = "INSERT INTO mla_rental_tbl (";
 			sql        += "member_id, item_id, order_date, hope_order,";
 			sql        += "send_flag, return_flag, make_date, update_date";
-			sql        += ") VALUES(?, ?, NOW(), 1, 0, 0, NOW(), NOW())";
+			sql        += ") VALUES(?, ?, NOW(), ?, 0, 0, NOW(), NOW())";
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, rModel.getMember_id());
 			ps.setInt(2, rModel.getItem_id());
+			ps.setInt(3, getHopeOrder(rModel.getMember_id()));
 
 			numRow = ps.executeUpdate();
 			if(numRow > 0) {
@@ -104,6 +124,37 @@ public class RentalDb {
 		}
 	}
 
+	// レンタルIDに紐付く希望順を更新
+	public boolean updateRentalHope(String ids) {
+		int numRow =0;
+		String[] idsArr = ids.split(",", 0);
+		if(idsArr.length < 2) {
+			return false; // 2件以下では来ないハズなのでエラー
+		}
+		try (Connection connection = dataSource.getConnection()) {
+			connection.setAutoCommit(false);
+			String sql = "UPDATE mla_rental_tbl SET update_date = NOW(), hope_order = CASE rental_id ";
+			for(int i = 0; i < idsArr.length; i++) {
+				sql += "WHEN " + idsArr[i] + " THEN " + (i + 1) + " ";
+			}
+			sql += "END WHERE rental_id IN (" + ids + ")";
+			PreparedStatement ps = connection.prepareStatement(sql);
+			numRow = ps.executeUpdate();
+			if(numRow > 0) {
+				connection.commit();
+				ps.close();
+				return true;
+
+			} else {
+				connection.rollback();
+				ps.close();
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 	// -----------------------------
 	// 内部処理メソッド
 	// -----------------------------

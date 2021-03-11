@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import jp.ken.mla.db.RentalDb;
 import jp.ken.mla.model.LoginModel;
+import jp.ken.mla.model.RentalHopeModel;
 import jp.ken.mla.model.RentalModel;
 
 @Controller
@@ -31,6 +32,7 @@ public class RentalController {
 		member_id = lModel.getMember_id();
 		model.addAttribute("rentalList", rentalDb.getByMemberId(member_id));
 		model.addAttribute("rentalIds", rentalDb.getByRentalItemIds(member_id));
+		model.addAttribute("rentalHopeModel", new RentalHopeModel());
 		IndexController.setActiveTab(model, "rental");
 		return "index";
 	}
@@ -39,7 +41,7 @@ public class RentalController {
 	@RequestMapping(method=RequestMethod.POST, params="rentalAdd")
 	public String rentalAddBtn(@ModelAttribute RentalModel rModel, Model model) {
 		if(!rentalDb.insertRentalData(rModel)) {
-			System.out.println("レンタル管理テーブルinsertエラー");
+			return IndexController.dispError(model, "DB更新に失敗しました。");
 		}
 		return "redirect:/index";
 	}
@@ -48,7 +50,16 @@ public class RentalController {
 	@RequestMapping(method=RequestMethod.POST, params="rentalDel")
 	public String rentalDelBtn(@ModelAttribute RentalModel rModel, Model model) {
 		if(!rentalDb.deleteRentalData(rModel)) {
-			System.out.println("レンタル管理テーブルdeleteエラー");
+			return IndexController.dispError(model, "DB更新に失敗しました。");
+		}
+		return "redirect:/rental";
+	}
+
+	// 商品レコードドラッグ＆ドロップ時
+	@RequestMapping(method=RequestMethod.POST, params="rental_hope")
+	public String rentalRecChange(@ModelAttribute RentalHopeModel rhModel, Model model) {
+		if(!rentalDb.updateRentalHope(rhModel.getRental_hope())) {
+			return IndexController.dispError(model, "DB更新に失敗しました。");
 		}
 		return "redirect:/rental";
 	}

@@ -30,10 +30,11 @@ public class ListMemberController {
 	// 会員一覧画面表示
 	@RequestMapping(method=RequestMethod.GET)
 	public String toRental(Model model, LoginModel lModel) {
+		if(lModel.getMember_id() == 0) { // 未ログイン時はログイン画面にリダイレクト
+			return "redirect:/login";
+		}
 		if(lModel.getAdmin() != 1) { // 管理ユーザ以外からのアクセスはエラー
-			model.addAttribute("errorMessage", "管理者ユーザ以外はアクセス出来ません。");
-			IndexController.setActiveTab(model, "error");
-			return "index";
+			return IndexController.dispError(model, "管理者ユーザ以外はアクセス出来ません。");
 		}
 		model.addAttribute("memberList", memberDb.allList());
 		model.addAttribute("listMemberModel", new ListMemberModel());

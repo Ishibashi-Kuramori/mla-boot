@@ -73,7 +73,7 @@ public class ModMemberController {
 				return "redirect:/index"; // 会員はTOPページに戻る
 			}
 		} else {
-			return setDispModMember(model, mmModel, "DB更新に失敗しました。");
+			return IndexController.dispError(model, "DB更新に失敗しました。");
 		}
 
 	}
@@ -84,7 +84,7 @@ public class ModMemberController {
 		if(memberDb.deleteMemberData(lModel.getMember_id())) {
 			return "redirect:/logout";
 		} else {
-			return setDispModMember(model, mmModel, "DB更新に失敗しました。");
+			return IndexController.dispError(model, "DB更新に失敗しました。");
 		}
 	}
 

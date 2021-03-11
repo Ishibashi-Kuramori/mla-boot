@@ -67,17 +67,11 @@ public class IndexController {
 		return "redirect:/index";
 	}
 
+	// サイドメニューアクティブ切り替え
 	public static void setActiveTab(Model model, String pName) {
 
 		SearchModel sModel = new SearchModel();
 		model.addAttribute("searchModel", sModel);
-/*
-		// 借りる／発送準備中ボタン用Modelをセット
-		if(pName.equals("top") || pName.equals("rental")) {
-			RentalModel rModel = new RentalModel();
-			model.addAttribute("rentalModel", rModel);
-		}
-*/
 		model.addAttribute("activeTop",       (pName.equals("top"))       ? "active" : "");
 		model.addAttribute("activeModMember", (pName.equals("modMember") || pName.equals("listdMember")) ? "active" : "");
 		model.addAttribute("activeRental",    (pName.equals("rental"))    ? "active" : "");
@@ -88,4 +82,10 @@ public class IndexController {
 		model.addAttribute("pName", pName);
 	}
 
+	// エラーページ表示
+	public static String dispError(Model model, String msg) {
+		model.addAttribute("errorMessage", msg);
+		setActiveTab(model, "error");
+		return "index";
+	}
 }
