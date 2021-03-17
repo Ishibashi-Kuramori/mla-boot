@@ -9,7 +9,7 @@
 <td class="align-middle">
   <span class="text-warning"><i class="fas fa-coins"></i> [[${item.add_point}]]</span>
 </td>
-<td class="align-middle">
+<td class="align-middle" th:if='${pName.equals("top") || pName.equals("rental")}'>
   <button type="button" class="btn btn-outline-primary w-100 disabled" th:if="${loginModel.member_id == 0}">借りる</button>
   <form th:action="@{/rental}" method="post" th:object="${rentalModel}" th:if="${loginModel.member_id != 0}">
     <input type="hidden" name="member_id" th:value="${loginModel.member_id}" />
@@ -36,5 +36,12 @@
       </div> <!-- /.modal-dialog -->
     </div> <!-- /.modal -->
     <button type="submit" class="btn btn-outline-primary w-100" name="rentalAdd" th:if="${!rentalIds.contains(item.item_id)}">借りる</button>
+  </form>
+</td>
+<td class="align-middle" th:if='${pName.equals("stock")}'>
+  <form th:action="@{/stock}" method="post" th:object="${item}" class="row">
+    <input type="hidden" name="item_id" th:value="${item.item_id}" />
+    <button type="submit" class="btn btn-outline-primary col-md" name="itemEdit"><i class="far fa-edit"></i>&nbsp;編集</button>
+    <button type="submit" class="btn btn-outline-danger col-md disabled" name="itemDelete"><i class="far fa-trash-alt"></i>&nbsp;削除</button>
   </form>
 </td>

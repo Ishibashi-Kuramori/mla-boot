@@ -14,7 +14,7 @@
     <div class="content">
       <div class="container-fluid">
         <!-- form start -->
-        <form class="form-horizontal" id="memberForm" th:action="@{/modMember}" method="post" th:object="${modMemberModel}" style="width: 600px;">
+        <form class="form-horizontal" id="modMemberForm" th:action="@{/modMember}" method="post" th:object="${modMemberModel}" style="width: 600px;">
           <input type="hidden" name="mod.member_id" th:value="${modMemberModel.mod.member_id}" />
           <div class="card-body">
             <div class="form-group row">

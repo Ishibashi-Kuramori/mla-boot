@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class ItemDb {
 
 	@Autowired
 	private MediaDb mediaDb;
+
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 	// ID から商品情報を1件取得
 	public ItemModel getById(int id) {
@@ -77,6 +80,43 @@ public class ItemDb {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ArrayList<>();
+		}
+	}
+
+	// 商品情報を編集
+	public boolean updateItemData(ItemModel iModel) {
+		int numRow =0;
+		try (Connection connection = dataSource.getConnection()) {
+			connection.setAutoCommit(false);
+			String sql = "UPDATE mla_item_tbl SET ";
+			sql        += "item_name = ?, author_name = ?, media_id = ?, stock_cnt = ?, order_cnt = ?, ";
+			sql        += "new_old = ?, can_rental_date = ?, add_point = ?, update_date = NOW() ";
+			sql        += "WHERE item_id = ?";
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setString(1, iModel.getItem_name());
+			ps.setString(2, iModel.getAuthor_name());
+			ps.setInt(3, iModel.getMedia_id());
+			ps.setInt(4, iModel.getStock_cnt());
+			ps.setInt(5, iModel.getOrder_cnt());
+			ps.setInt(6, iModel.getNew_old());
+			ps.setDate(7, new java.sql.Date(iModel.getCan_rental_date().getTime()));
+			ps.setInt(8, iModel.getAdd_point());
+			ps.setInt(9, iModel.getItem_id());
+
+			numRow = ps.executeUpdate();
+			if(numRow > 0) {
+				connection.commit();
+				ps.close();
+				return true;
+
+			} else {
+				connection.rollback();
+				ps.close();
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 
