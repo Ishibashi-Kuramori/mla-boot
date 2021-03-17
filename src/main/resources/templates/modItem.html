@@ -1,0 +1,89 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-12">
+        <h1 class="m-0">在庫管理(商品編集)</h1>
+      </div><!-- /.col -->
+    </div><!-- /.row -->
+  </div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<div class="content">
+  <div class="container-fluid">
+    <!-- form start -->
+    <form class="form-horizontal" id="itemForm" th:action="@{/modItem}" method="post" th:object="${itemModel}" style="width: 600px;">
+      <input type="hidden" name="item_id" th:value="${itemModel.item_id}" />
+      <div class="card-body">
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">商品名</label>
+          <div class="col-sm-10">
+            <input type="text" th:field="*{item_name}" class="form-control" placeholder="商品名" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">作者名</label>
+          <div class="col-sm-10">
+            <input type="text" th:field="*{author_name}" class="form-control" placeholder="監督/アーティスト" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">媒体</label>
+          <div class="col-sm-10">
+            <select th:field="*{media_id}" class="custom-select">
+              <option th:each="media : ${mediaList}" th:value="${media.media_id}" th:text="${media.media_name}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">在庫数</label>
+          <div class="col-sm-10">
+            <input type="text" th:field="*{stock_cnt}" class="form-control" placeholder="在庫数" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">発注点</label>
+          <div class="col-sm-10">
+            <input type="text" th:field="*{order_cnt}" class="form-control" placeholder="発注点" />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">新旧区分</label>
+          <div class="col-sm-10 row text-center">
+            <div class="custom-control custom-radio col-md">
+              <input class="custom-control-input" type="radio" id="customRadio0" th:field="*{new_old}" value="0">
+              <label for="customRadio0" class="custom-control-label">新作</label>
+            </div>
+            <div class="custom-control custom-radio col-md">
+              <input class="custom-control-input" type="radio" id="customRadio1" th:field="*{new_old}" value="1">
+              <label for="customRadio1" class="custom-control-label">旧作</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">開始日</label>
+          <div class="col-sm-10 input-group date" id="reservationdate" data-target-input="nearest">
+            <input type="text" th:field="*{can_rental_date}" class="form-control datetimepicker-input" data-target="#reservationdate"/>
+            <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+              <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">ポイント</label>
+          <div class="col-sm-10">
+            <input type="text" th:field="*{add_point}" class="form-control" placeholder="ポイント" />
+          </div>
+        </div>
+
+      </div> <!-- /.card-body -->
+      <span class="error invalid-feedback" style="display: inline;">[[${errorMessage}]]</span>
+      <div class="card-footer">
+        <button type="submit" class="btn btn-info" name="update">更新</button>
+        <button type="reset" class="btn btn-default float-right mr-3">リセット</button>
+      </div> <!-- /.card-footer -->
+    </form>
+  </div> <!-- /.container-fluid -->
+</div> <!-- /.content -->

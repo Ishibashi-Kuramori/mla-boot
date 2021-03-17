@@ -76,7 +76,7 @@ public class IndexController {
 		model.addAttribute("activeModMember", (pName.equals("modMember") || pName.equals("listdMember")) ? "active" : "");
 		model.addAttribute("activeRental",    (pName.equals("rental"))    ? "active" : "");
 		model.addAttribute("activeHistory",   (pName.equals("history"))   ? "active" : "");
-		model.addAttribute("activeStock",     (pName.equals("stock"))     ? "active" : "");
+		model.addAttribute("activeStock",     (pName.equals("stock") || pName.equals("modItem"))     ? "active" : "");
 		model.addAttribute("activeRemind",    (pName.equals("remind"))    ? "active" : "");
 		model.addAttribute("activeInfo",      (pName.equals("info"))      ? "active" : "");
 		model.addAttribute("pName", pName);
